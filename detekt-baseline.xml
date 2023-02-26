@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>NewLineAtEndOfFile:ApiKeyInterceptor.kt$com.example.weatherapp.data.interceptor.ApiKeyInterceptor.kt</ID>
+    <ID>NewLineAtEndOfFile:CitiesResponse.kt$com.example.weatherapp.data.response.CitiesResponse.kt</ID>
+    <ID>NewLineAtEndOfFile:Container.kt$com.example.weatherapp.data.Container.kt</ID>
+    <ID>NewLineAtEndOfFile:DetailFragment.kt$com.example.weatherapp.ui.fragments.DetailFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:MainFragment.kt$com.example.weatherapp.ui.fragments.MainFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:MetricInterceptor.kt$com.example.weatherapp.data.interceptor.MetricInterceptor.kt</ID>
+    <ID>NewLineAtEndOfFile:WeatherApi.kt$com.example.weatherapp.data.WeatherApi.kt</ID>
+    <ID>NewLineAtEndOfFile:WeatherHolder.kt$com.example.weatherapp.data.adapter.WeatherHolder.kt</ID>
+    <ID>NewLineAtEndOfFile:WeatherListAdapter.kt$com.example.weatherapp.data.adapter.WeatherListAdapter.kt</ID>
+    <ID>NewLineAtEndOfFile:WeatherResponse.kt$com.example.weatherapp.data.response.WeatherResponse.kt</ID>
+  </CurrentIssues>
+</SmellBaseline>
