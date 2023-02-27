@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ItemCityBinding
 import com.example.weatherapp.data.response.WeatherResponse
 
@@ -24,14 +25,31 @@ class WeatherHolder(
     fun onBind(weatherResponse: WeatherResponse) {
         this.weatherResponse = weatherResponse
         with(binding) {
-           weatherResponse.weather?.firstOrNull()?.also {
+            weatherResponse.weather?.firstOrNull()?.also {
                 ivCover.load("https://openweathermap.org/img/w/${it.icon}.png") {
                     crossfade(true)
                 }
             }
             tvTitle.text = weatherResponse.name
-            tvTemp.text = weatherResponse.main?.temp.toString() + "°C"
+            val temp = weatherResponse.main?.temp
+            val color = setTempColor(temp)
+            tvTemp.text = temp.toString() + "°C"
+            tvTemp.setTextColor(color)
         }
+    }
+
+    private fun setTempColor(temp: Double?): Int {
+        var color = 0
+        if (temp != null) {
+            when (temp) {
+                in -100.0..-20.1 -> color = R.color.purple_700
+                in -20.0..-0.1 -> color = R.color.teal_200
+                0.0 -> color = R.color.green
+                in 0.1..20.0 -> color = R.color.orange_light
+                in 20.1..100.0 -> color = R.color.red
+            }
+        }
+        return color
     }
 
     companion object {
