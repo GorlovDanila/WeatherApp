@@ -1,5 +1,13 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues></CurrentIssues>
+  <CurrentIssues>
+    <ID>NewLineAtEndOfFile:CitiesInfo.kt$com.example.weatherapp.domain.weather.CitiesInfo.kt</ID>
+    <ID>NewLineAtEndOfFile:DataContainer.kt$com.example.weatherapp.di.DataContainer.kt</ID>
+    <ID>NewLineAtEndOfFile:GetCitiesWeatherUseCase.kt$com.example.weatherapp.domain.weather.GetCitiesWeatherUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:WeatherApi.kt$com.example.weatherapp.data.weather.datasource.remote.WeatherApi.kt</ID>
+    <ID>NewLineAtEndOfFile:WeatherInfo.kt$com.example.weatherapp.domain.weather.WeatherInfo.kt</ID>
+    <ID>NewLineAtEndOfFile:WeatherRepository.kt$com.example.weatherapp.domain.weather.WeatherRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:WeatherRepositoryImpl.kt$com.example.weatherapp.data.weather.WeatherRepositoryImpl.kt</ID>
+  </CurrentIssues>
 </SmellBaseline>

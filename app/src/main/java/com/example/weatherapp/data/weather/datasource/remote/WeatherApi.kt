@@ -1,7 +1,7 @@
-package com.example.weatherapp.data
+package com.example.weatherapp.data.weather.datasource.remote
 
-import com.example.weatherapp.data.response.CitiesResponse
-import com.example.weatherapp.data.response.WeatherResponse
+import com.example.weatherapp.data.weather.datasource.remote.response.CitiesResponse
+import com.example.weatherapp.data.weather.datasource.remote.response.WeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,5 +20,4 @@ interface WeatherApi {
         @Query("lon") longitude: Double?,
         @Query("cnt") count: Int = COUNT_CITIES,
     ): CitiesResponse
-
 }

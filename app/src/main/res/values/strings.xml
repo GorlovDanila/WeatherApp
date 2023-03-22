@@ -11,4 +11,5 @@
     <string name="metric">°C</string>
     <string name="am"> AM</string>
     <string name="pm"> PM</string>
+    <string name="perm_error">Ошибка! Геолокацию определить не удалось!</string>
 </resources>

@@ -1,14 +1,15 @@
-package com.example.weatherapp.data.interceptor
+package com.example.weatherapp.data.core.interceptor
 
+import com.example.weatherapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class MetricInterceptor : Interceptor {
+class ApiKeyInterceptor: Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val newUrl = original.url.newBuilder()
-            .addQueryParameter("units", "metric")
+            .addQueryParameter("appid", BuildConfig.API_KEY)
             .build()
 
         return chain.proceed(

@@ -1,4 +1,4 @@
-package com.example.weatherapp.data.adapter
+package com.example.weatherapp.presentation.ui.holders
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ItemCityBinding
-import com.example.weatherapp.data.response.WeatherResponse
+import com.example.weatherapp.data.weather.datasource.remote.response.WeatherResponse
 
 class WeatherHolder(
     private val binding: ItemCityBinding,
@@ -42,10 +42,10 @@ class WeatherHolder(
         var color = 0
         if (temp != null) {
             when (temp) {
-                in -100.0..-20.1 -> color = R.color.purple_700
-                in -20.0..-0.1 -> color = R.color.teal_200
+                in -100.0..-20.01 -> color = R.color.purple_700
+                in -20.0..-0.01 -> color = R.color.teal_200
                 0.0 -> color = R.color.green
-                in 0.1..20.0 -> color = R.color.orange_light
+                in 0.01..20.09 -> color = R.color.orange_light
                 in 20.1..100.0 -> color = R.color.red
             }
         }

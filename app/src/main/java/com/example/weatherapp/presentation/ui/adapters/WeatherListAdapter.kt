@@ -1,11 +1,12 @@
-package com.example.weatherapp.data.adapter
+package com.example.weatherapp.presentation.ui.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
-import com.example.weatherapp.data.response.WeatherResponse
+import com.example.weatherapp.data.weather.datasource.remote.response.WeatherResponse
+import com.example.weatherapp.presentation.ui.holders.WeatherHolder
 
 class WeatherListAdapter(
     private val actionNext: (WeatherResponse) -> Unit,
