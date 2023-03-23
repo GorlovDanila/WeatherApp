@@ -1,7 +1,6 @@
 package com.example.weatherapp
 
 import android.app.Application
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.weatherapp.di.DataContainer
 import timber.log.Timber
 

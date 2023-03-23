@@ -17,13 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.data.weather.datasource.remote.response.WeatherResponse
 import com.example.weatherapp.databinding.FragmentMainBinding
-import com.example.weatherapp.di.DataContainer
 import com.example.weatherapp.presentation.presenters.MainViewModel
 import com.example.weatherapp.presentation.ui.adapters.WeatherListAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-//Должно быть ноль логики, только сеттинг данных и запрос пермишенов
 class MainMvvmFragment : Fragment(R.layout.fragment_main) {
 
     private var binding: FragmentMainBinding? = null
