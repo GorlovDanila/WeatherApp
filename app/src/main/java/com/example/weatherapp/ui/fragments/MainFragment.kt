@@ -36,28 +36,37 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var citiesRepository: List<WeatherResponse?>? = null
 
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                getLocation()
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                getLocation()
+            }
+            else -> {
+                latitude = 54.5299
+                longitude = 52.8039
+                lifecycleScope.launch {
+                    citiesRepository = api.getNearestCities(latitude, longitude).list
+                    setListAdapterConfig()
+                }
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMainBinding.bind(view)
+        listAdapter = WeatherListAdapter(actionNext = ::onWeatherClick)
+        binding?.rvCities?.adapter = listAdapter
+        binding?.rvCities?.layoutManager = LinearLayoutManager(requireContext())
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
-        val locationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            when {
-                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                    getLocation()
-                }
-                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    getLocation()
-                }
-                else -> {
-                    latitude = 0.0
-                    longitude = 0.0
-                }
-            }
-        }
 
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -149,9 +158,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun setListAdapterConfig() {
-        listAdapter = WeatherListAdapter(actionNext = ::onWeatherClick)
-        binding?.rvCities?.adapter = listAdapter
-        binding?.rvCities?.layoutManager = LinearLayoutManager(requireContext())
         listAdapter?.submitList(citiesRepository)
     }
 
