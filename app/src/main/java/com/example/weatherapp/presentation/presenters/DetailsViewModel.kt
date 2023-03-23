@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.weatherapp.di.DataContainer
 import com.example.weatherapp.domain.weather.GetWeatherUseCase
 import com.example.weatherapp.domain.weather.WeatherInfo
 
@@ -18,17 +17,16 @@ class DetailsViewModel(
     val weatherInfo: LiveData<WeatherInfo?>
         get() = _weatherInfo
 
-    suspend fun loadWeather(query: String){
+    suspend fun loadWeather(query: String) {
         _weatherInfo.value = getWeatherUseCase(query)
     }
 
     companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
+        fun provideFactory(
+            getWeatherUseCase: GetWeatherUseCase
+        ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val getWeatherUseCase = DataContainer.weatherUseCase
-                DetailsViewModel(
-                    getWeatherUseCase
-                )
+                DetailsViewModel(getWeatherUseCase)
             }
         }
     }

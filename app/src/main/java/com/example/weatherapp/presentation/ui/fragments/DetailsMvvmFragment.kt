@@ -6,22 +6,32 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.weatherapp.App
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentDetailBinding
+import com.example.weatherapp.domain.weather.GetWeatherUseCase
 import com.example.weatherapp.domain.weather.WeatherInfo
 import com.example.weatherapp.presentation.presenters.DetailsViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class DetailsMvvmFragment : Fragment(R.layout.fragment_detail) {
 
     private var binding: FragmentDetailBinding? = null
 
+    @Inject
+    lateinit var useCase: GetWeatherUseCase
+
     private val viewModel: DetailsViewModel by viewModels {
-        DetailsViewModel.Factory
+        DetailsViewModel.provideFactory(useCase)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+        super.onCreate(savedInstanceState)
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

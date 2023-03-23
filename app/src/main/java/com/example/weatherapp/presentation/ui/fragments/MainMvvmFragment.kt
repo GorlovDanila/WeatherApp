@@ -14,14 +14,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weatherapp.App
 import com.example.weatherapp.R
 import com.example.weatherapp.data.weather.datasource.remote.response.WeatherResponse
 import com.example.weatherapp.databinding.FragmentMainBinding
+import com.example.weatherapp.domain.location.GetLocationUseCase
+import com.example.weatherapp.domain.weather.GetCitiesWeatherUseCase
+import com.example.weatherapp.domain.weather.GetWeatherUseCase
 import com.example.weatherapp.presentation.presenters.MainViewModel
 import com.example.weatherapp.presentation.ui.adapters.WeatherListAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import javax.inject.Inject
 
 //Должно быть ноль логики, только сеттинг данных и запрос пермишенов
 class MainMvvmFragment : Fragment(R.layout.fragment_main) {
@@ -30,8 +34,17 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
     private var listAdapter: WeatherListAdapter? = null
     private var citiesRepository: List<WeatherResponse?>? = null
 
+    @Inject
+    lateinit var getWeatherUseCase: GetWeatherUseCase
+
+    @Inject
+    lateinit var getCitiesWeatherUseCase: GetCitiesWeatherUseCase
+
+    @Inject
+    lateinit var getLocationUseCase: GetLocationUseCase
+
     private val viewModel: MainViewModel by viewModels {
-        MainViewModel.Factory
+        MainViewModel.provideFactory(getWeatherUseCase, getCitiesWeatherUseCase, getLocationUseCase)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -57,16 +70,20 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+        super.onCreate(savedInstanceState)
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        DataContainer.provideFusedLocation(applicationContext = requireContext())
+
         binding = FragmentMainBinding.bind(view)
         listAdapter = WeatherListAdapter{viewModel.onWeatherClick(it)}
         binding?.rvCities?.adapter = listAdapter
         binding?.rvCities?.layoutManager = LinearLayoutManager(requireContext())
-        Timber.e("dfffffffff")
+
         observeViewModel()
 
         if (ActivityCompat.checkSelfPermission(

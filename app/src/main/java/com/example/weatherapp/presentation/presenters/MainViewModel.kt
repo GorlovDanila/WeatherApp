@@ -5,7 +5,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.weatherapp.R
 import com.example.weatherapp.data.weather.datasource.remote.response.WeatherResponse
-import com.example.weatherapp.di.DataContainer
 import com.example.weatherapp.domain.location.GetLocationUseCase
 import com.example.weatherapp.domain.location.LocationInfo
 import com.example.weatherapp.domain.weather.GetCitiesWeatherUseCase
@@ -66,6 +65,10 @@ class MainViewModel(
             getLocation()
         } else {
             _error.value = R.string.perm_error
+            _location.value = LocationInfo(
+                latitude = 54.5299,
+                longitude = 52.8039,
+            )
         }
     }
 
@@ -82,11 +85,12 @@ class MainViewModel(
     }
 
     companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
+        fun provideFactory(
+            getWeatherUseCase: GetWeatherUseCase,
+            getCitiesWeatherUseCase: GetCitiesWeatherUseCase,
+            getLocationUseCase: GetLocationUseCase,
+        ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val getWeatherUseCase = DataContainer.weatherUseCase
-                val getCitiesWeatherUseCase = DataContainer.citiesWeatherUseCase
-                val getLocationUseCase = DataContainer.locationUseCase
                 MainViewModel(
                     getWeatherUseCase,
                     getLocationUseCase,
