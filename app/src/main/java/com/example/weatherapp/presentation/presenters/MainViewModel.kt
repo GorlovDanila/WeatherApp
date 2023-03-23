@@ -66,6 +66,10 @@ class MainViewModel(
             getLocation()
         } else {
             _error.value = R.string.perm_error
+            _location.value = LocationInfo(
+                latitude = 54.5299,
+                longitude = 52.8039,
+            )
         }
     }
 

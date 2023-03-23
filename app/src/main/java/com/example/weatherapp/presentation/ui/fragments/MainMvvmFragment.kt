@@ -61,7 +61,7 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        DataContainer.provideFusedLocation(applicationContext = requireContext())
+
         binding = FragmentMainBinding.bind(view)
         listAdapter = WeatherListAdapter{viewModel.onWeatherClick(it)}
         binding?.rvCities?.adapter = listAdapter
