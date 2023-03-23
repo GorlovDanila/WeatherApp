@@ -22,6 +22,7 @@ import com.example.weatherapp.presentation.presenters.MainViewModel
 import com.example.weatherapp.presentation.ui.adapters.WeatherListAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 //Должно быть ноль логики, только сеттинг данных и запрос пермишенов
 class MainMvvmFragment : Fragment(R.layout.fragment_main) {
@@ -61,12 +62,12 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        DataContainer.provideFusedLocation(applicationContext = requireContext())
+//        DataContainer.provideFusedLocation(applicationContext = requireContext())
         binding = FragmentMainBinding.bind(view)
         listAdapter = WeatherListAdapter{viewModel.onWeatherClick(it)}
         binding?.rvCities?.adapter = listAdapter
         binding?.rvCities?.layoutManager = LinearLayoutManager(requireContext())
-
+        Timber.e("dfffffffff")
         observeViewModel()
 
         if (ActivityCompat.checkSelfPermission(
