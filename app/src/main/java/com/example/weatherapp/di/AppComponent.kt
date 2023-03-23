@@ -1,10 +1,6 @@
 package com.example.weatherapp.di
 
-import android.app.Application
 import android.content.Context
-import androidx.fragment.app.Fragment
-import com.example.weatherapp.App
-import com.example.weatherapp.presentation.ui.MainActivity
 import com.example.weatherapp.presentation.ui.fragments.DetailsMvvmFragment
 import com.example.weatherapp.presentation.ui.fragments.MainMvvmFragment
 import dagger.BindsInstance

@@ -23,8 +23,8 @@ class MainViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
-    private val _error = MutableLiveData<Int>()
-    val error: LiveData<Int>
+    private val _error = SingleLiveEvent<Int>()
+    val error: SingleLiveEvent<Int>
         get() = _error
 
     private val _transaction = SingleLiveEvent<String?>()
@@ -78,10 +78,6 @@ class MainViewModel(
 
     suspend fun getNearestCities(latitude: Double?, longitude: Double?) {
         _citiesList.value = getCitiesWeatherUseCase.invoke(latitude, longitude).list
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 
     companion object {

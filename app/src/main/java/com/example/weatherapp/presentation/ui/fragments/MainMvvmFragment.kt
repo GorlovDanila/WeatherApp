@@ -27,7 +27,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//Должно быть ноль логики, только сеттинг данных и запрос пермишенов
 class MainMvvmFragment : Fragment(R.layout.fragment_main) {
 
     private var binding: FragmentMainBinding? = null
