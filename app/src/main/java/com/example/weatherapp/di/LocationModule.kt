@@ -11,12 +11,6 @@ import dagger.Provides
 @Module
 class LocationModule {
 
-//    @Provides
-//    fun provideContext(app: Application): Context = app.applicationContext
-
-//    @Provides
-//    fun provideContext(): Context = context
-
     @Provides
     fun provideFusedLocation(
         applicationContext: Context
