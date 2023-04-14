@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,7 @@ import com.example.weatherapp.presentation.ui.adapters.WeatherListAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainMvvmFragment : Fragment(R.layout.fragment_main) {
@@ -89,12 +91,14 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding?.run {
+            Timber.e("1")
             swCity.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    if (query.isNotEmpty()) {
+//                    if (query.isNotEmpty()) {
                         viewModel.loadWeather(query)
-                    }
+                        Timber.e(query)
+//                    }
                     return false
                 }
 
@@ -114,7 +118,6 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
             error.observe(viewLifecycleOwner) {
                 if (it == null) return@observe
                 setError(error.value?.toInt() ?: throw java.lang.NullPointerException("error is null"))
-                error.value = null
             }
 
             citiesList.observe(viewLifecycleOwner) {
