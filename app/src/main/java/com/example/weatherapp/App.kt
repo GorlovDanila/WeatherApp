@@ -2,8 +2,10 @@ package com.example.weatherapp
 
 import android.app.Application
 import com.example.weatherapp.di.*
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
+@HiltAndroidApp
 class App : Application() {
 
     override fun onCreate() {
@@ -13,12 +15,12 @@ class App : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        appComponent = DaggerAppComponent.builder()
-            .context(applicationContext)
-            .build()
+//        appComponent = DaggerAppComponent.builder()
+//            .context(applicationContext)
+//            .build()
     }
 
-    companion object {
-        lateinit var appComponent: AppComponent
-    }
+//    companion object {
+//        lateinit var appComponent: AppComponent
+//    }
 }

@@ -6,6 +6,8 @@ import com.example.weatherapp.data.core.interceptor.MetricInterceptor
 import com.example.weatherapp.data.weather.datasource.remote.WeatherApi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,6 +16,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Named
 
 @Module
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
     @Provides
