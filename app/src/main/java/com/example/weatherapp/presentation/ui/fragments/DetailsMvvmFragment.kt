@@ -6,7 +6,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.weatherapp.App
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentDetailBinding
 import com.example.weatherapp.domain.weather.GetWeatherUseCase
@@ -23,8 +22,6 @@ class DetailsMvvmFragment : Fragment(R.layout.fragment_detail) {
 
     private var binding: FragmentDetailBinding? = null
 
-//    private val viewModel: DetailsViewModel by viewModels()
-
     @Inject
     lateinit var useCase: GetWeatherUseCase
 
@@ -38,13 +35,10 @@ class DetailsMvvmFragment : Fragment(R.layout.fragment_detail) {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val cityName = arguments?.getString(ARG_TITLE_VALUE)
         binding = FragmentDetailBinding.bind(view)
 
         lifecycleScope.launch {
-//            if (cityName != null) {
                 viewModel.loadWeather()
-//            }
         }
 
         viewModel.weatherInfo.observe(this.viewLifecycleOwner) {

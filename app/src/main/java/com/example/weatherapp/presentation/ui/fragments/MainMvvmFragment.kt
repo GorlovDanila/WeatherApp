@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -95,10 +94,9 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
             swCity.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-//                    if (query.isNotEmpty()) {
+                    if (query.isNotEmpty()) {
                         viewModel.loadWeather(query)
-                        Timber.e(query)
-//                    }
+                    }
                     return false
                 }
 

@@ -19,7 +19,6 @@ class LocationModule {
         applicationContext: Context
     ): FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(applicationContext)
 
-
     @Provides
     fun provideLocationDataSource(
         fusedLocationProviderClient: FusedLocationProviderClient
