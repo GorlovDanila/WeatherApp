@@ -1,8 +1,10 @@
 package com.example.weatherapp.domain.weather
 
+import io.reactivex.rxjava3.core.Single
+
 class GetWeatherUseCase(
     private val weatherRepository: WeatherRepository
 ) {
 
-    suspend operator fun invoke(query: String): WeatherInfo = weatherRepository.getWeather(query)
+    operator fun invoke(query: String): Single<WeatherInfo> = weatherRepository.getWeather(query)
 }

@@ -8,6 +8,9 @@ import com.example.weatherapp.domain.weather.WeatherInfo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class DetailsViewModel @AssistedInject constructor(
     @Assisted private val getWeatherUseCase: GetWeatherUseCase,
@@ -18,13 +21,24 @@ class DetailsViewModel @AssistedInject constructor(
     val weatherInfo: LiveData<WeatherInfo?>
         get() = _weatherInfo
 
-    suspend fun loadWeather() {
-        _weatherInfo.value = getWeatherUseCase(cityName)
-    }
+    private var weatherDisposable: Disposable? = null
+
+    fun loadWeather() {
+        weatherDisposable = getWeatherUseCase(cityName)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = { weatherInfo ->
+                _weatherInfo.value = weatherInfo
+            })
+        }
 
     @AssistedFactory
     interface DetailsViewModelFactory {
         fun create(getWeatherUseCase: GetWeatherUseCase, cityName: String?): DetailsViewModel
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        weatherDisposable?.dispose()
     }
 
     companion object {

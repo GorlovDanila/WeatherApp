@@ -1,11 +1,13 @@
 package com.example.weatherapp.domain.weather
 
+import io.reactivex.rxjava3.core.Single
+
 interface WeatherRepository {
 
-    suspend fun getWeather(query: String): WeatherInfo
+    fun getWeather(query: String): Single<WeatherInfo>
 
-    suspend fun getNearestCities(
+    fun getNearestCities(
         latitude: Double?,
         longitude: Double?,
-    ): CitiesInfo
+    ): Single<CitiesInfo>
 }

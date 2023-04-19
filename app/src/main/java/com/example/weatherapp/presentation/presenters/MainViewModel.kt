@@ -1,8 +1,6 @@
 package com.example.weatherapp.presentation.presenters
 
 import androidx.lifecycle.*
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.weatherapp.R
 import com.example.weatherapp.data.weather.datasource.remote.response.WeatherResponse
 import com.example.weatherapp.domain.location.GetLocationUseCase
@@ -11,8 +9,11 @@ import com.example.weatherapp.domain.weather.GetCitiesWeatherUseCase
 import com.example.weatherapp.domain.weather.GetWeatherUseCase
 import com.example.weatherapp.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,6 +43,12 @@ class MainViewModel @Inject constructor(
     val citiesList: LiveData<List<WeatherResponse?>?>
         get() = _citiesList
 
+    private var weatherDisposable: Disposable? = null
+    private var citiesDisposable: Disposable? = null
+    private var locationDisposable: Disposable? = null
+
+    private var disposable: CompositeDisposable = CompositeDisposable()
+
     fun onWeatherClick(weatherResponse: WeatherResponse) {
         val cityName = weatherResponse.name
         if (cityName != null) {
@@ -50,20 +57,20 @@ class MainViewModel @Inject constructor(
     }
 
     fun loadWeather(cityName: String) {
-        viewModelScope.launch {
-            try {
-                _loading.value = true
-                if (!getWeatherUseCase(cityName).cityName.isNullOrEmpty())
-                    _transaction.value = getWeatherUseCase(cityName).cityName.toString()
-            } catch (e: HttpException) {
+        weatherDisposable = getWeatherUseCase(cityName)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _loading.value = true }
+            .doAfterTerminate { _loading.value = false }
+            .subscribeBy(onSuccess = { weatherInfo ->
+                if (weatherInfo.cityName.isNullOrEmpty())
+                    Timber.e(weatherInfo.cityName.toString())
+                _transaction.value = weatherInfo.cityName.toString()
+            }, onError = {
                 _error.value = R.string.error
-            } finally {
-                _loading.value = false
-            }
-        }
+            })
     }
 
-    suspend fun locationPerm(res: Boolean) {
+    fun locationPerm(res: Boolean) {
         if (res) {
             getLocation()
         } else {
@@ -75,27 +82,29 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getLocation() {
-        _location.value = getLocationUseCase.invoke()
-    }
-
-    suspend fun getNearestCities(latitude: Double?, longitude: Double?) {
-        _citiesList.value = getCitiesWeatherUseCase.invoke(latitude, longitude).list
-    }
-
-    companion object {
-        fun provideFactory(
-            getWeatherUseCase: GetWeatherUseCase,
-            getCitiesWeatherUseCase: GetCitiesWeatherUseCase,
-            getLocationUseCase: GetLocationUseCase,
-        ): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                MainViewModel(
-                    getWeatherUseCase,
-                    getLocationUseCase,
-                    getCitiesWeatherUseCase
-                )
+    private fun getLocation() {
+        locationDisposable = getLocationUseCase.invoke()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { locationInfo ->
+                Timber.e(locationInfo.toString())
+                _location.value = locationInfo
             }
-        }
+//        _location.value = getLocationUseCase.invoke()
+    }
+
+    fun getNearestCities(latitude: Double?, longitude: Double?) {
+        citiesDisposable = getCitiesWeatherUseCase.invoke(latitude, longitude)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { citiesInfo ->
+                _citiesList.value = citiesInfo.list
+            }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        weatherDisposable?.dispose()
+        citiesDisposable?.dispose()
+        locationDisposable?.dispose()
+        disposable.clear()
     }
 }
