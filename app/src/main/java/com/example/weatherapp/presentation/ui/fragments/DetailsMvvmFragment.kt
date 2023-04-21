@@ -6,17 +6,18 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.weatherapp.App
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentDetailBinding
 import com.example.weatherapp.domain.weather.GetWeatherUseCase
 import com.example.weatherapp.domain.weather.WeatherInfo
 import com.example.weatherapp.presentation.presenters.DetailsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailsMvvmFragment : Fragment(R.layout.fragment_detail) {
 
     private var binding: FragmentDetailBinding? = null
@@ -24,25 +25,20 @@ class DetailsMvvmFragment : Fragment(R.layout.fragment_detail) {
     @Inject
     lateinit var useCase: GetWeatherUseCase
 
-    private val viewModel: DetailsViewModel by viewModels {
-        DetailsViewModel.provideFactory(useCase)
-    }
+    @Inject
+    lateinit var detailViewModelFactory: DetailsViewModel.DetailsViewModelFactory
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-        super.onCreate(savedInstanceState)
+    private val viewModel: DetailsViewModel by viewModels {
+        DetailsViewModel.provideFactory(detailViewModelFactory, useCase, arguments?.getString(ARG_TITLE_VALUE))
     }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val cityName = arguments?.getString(ARG_TITLE_VALUE)
         binding = FragmentDetailBinding.bind(view)
 
         lifecycleScope.launch {
-            if (cityName != null) {
-                viewModel.loadWeather(cityName)
-            }
+                viewModel.loadWeather()
         }
 
         viewModel.weatherInfo.observe(this.viewLifecycleOwner) {

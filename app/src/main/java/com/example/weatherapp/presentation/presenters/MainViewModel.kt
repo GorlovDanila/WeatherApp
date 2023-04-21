@@ -10,10 +10,13 @@ import com.example.weatherapp.domain.location.LocationInfo
 import com.example.weatherapp.domain.weather.GetCitiesWeatherUseCase
 import com.example.weatherapp.domain.weather.GetWeatherUseCase
 import com.example.weatherapp.utils.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getLocationUseCase: GetLocationUseCase,
     private val getCitiesWeatherUseCase: GetCitiesWeatherUseCase

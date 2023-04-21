@@ -14,37 +14,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherapp.App
 import com.example.weatherapp.R
 import com.example.weatherapp.data.weather.datasource.remote.response.WeatherResponse
 import com.example.weatherapp.databinding.FragmentMainBinding
-import com.example.weatherapp.domain.location.GetLocationUseCase
-import com.example.weatherapp.domain.weather.GetCitiesWeatherUseCase
-import com.example.weatherapp.domain.weather.GetWeatherUseCase
 import com.example.weatherapp.presentation.presenters.MainViewModel
 import com.example.weatherapp.presentation.ui.adapters.WeatherListAdapter
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import timber.log.Timber
 
+@AndroidEntryPoint
 class MainMvvmFragment : Fragment(R.layout.fragment_main) {
 
     private var binding: FragmentMainBinding? = null
     private var listAdapter: WeatherListAdapter? = null
     private var citiesRepository: List<WeatherResponse?>? = null
 
-    @Inject
-    lateinit var getWeatherUseCase: GetWeatherUseCase
+    private val viewModel: MainViewModel by viewModels()
 
-    @Inject
-    lateinit var getCitiesWeatherUseCase: GetCitiesWeatherUseCase
-
-    @Inject
-    lateinit var getLocationUseCase: GetLocationUseCase
-
-    private val viewModel: MainViewModel by viewModels {
-        MainViewModel.provideFactory(getWeatherUseCase, getCitiesWeatherUseCase, getLocationUseCase)
-    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     val locationPermissionRequest = registerForActivityResult(
@@ -67,11 +55,6 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
                 }
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-        super.onCreate(savedInstanceState)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -107,6 +90,7 @@ class MainMvvmFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding?.run {
+            Timber.e("1")
             swCity.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {

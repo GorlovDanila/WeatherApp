@@ -1,32 +1,40 @@
 package com.example.weatherapp.presentation.presenters
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.weatherapp.domain.weather.GetWeatherUseCase
 import com.example.weatherapp.domain.weather.WeatherInfo
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-class DetailsViewModel(
-    private val getWeatherUseCase: GetWeatherUseCase,
+class DetailsViewModel @AssistedInject constructor(
+    @Assisted private val getWeatherUseCase: GetWeatherUseCase,
+    @Assisted private val cityName: String
 ) : ViewModel() {
 
     private val _weatherInfo = MutableLiveData<WeatherInfo?>(null)
     val weatherInfo: LiveData<WeatherInfo?>
         get() = _weatherInfo
 
-    suspend fun loadWeather(query: String) {
-        _weatherInfo.value = getWeatherUseCase(query)
+    suspend fun loadWeather() {
+        _weatherInfo.value = getWeatherUseCase(cityName)
+    }
+
+    @AssistedFactory
+    interface DetailsViewModelFactory {
+        fun create(getWeatherUseCase: GetWeatherUseCase, cityName: String?): DetailsViewModel
     }
 
     companion object {
         fun provideFactory(
-            getWeatherUseCase: GetWeatherUseCase
+            assistedFactory: DetailsViewModelFactory,
+            getWeatherUseCase: GetWeatherUseCase,
+            cityName: String?
         ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                DetailsViewModel(getWeatherUseCase)
+                assistedFactory.create(getWeatherUseCase, cityName)
             }
         }
     }
