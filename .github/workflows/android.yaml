@@ -1,8 +1,11 @@
 name: CI Workflow
 
 on:
+  push:
+    branches: [ "master", "main", "task/*"]
+
   pull_request:
-    branches: [ "master", "main", "task/hw-1", "task/hw-3" ]
+    branches: [ "master", "main", "task/*"]
 
   workflow_dispatch:
 
