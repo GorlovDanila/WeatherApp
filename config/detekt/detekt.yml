@@ -320,7 +320,7 @@ naming:
     active: false
     forbiddenName: [ ]
   FunctionMaxLength:
-    active: true
+    active: false
     maximumFunctionNameLength: 40
   FunctionMinLength:
     active: true
