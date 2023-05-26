@@ -1,5 +1,6 @@
 package com.example.weatherapp.presentation.presenters
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getLocationUseCase: GetLocationUseCase,
-    private val getCitiesWeatherUseCase: GetCitiesWeatherUseCase
+    private val getCitiesWeatherUseCase: GetCitiesWeatherUseCase,
 ) : ViewModel() {
 
     private val _loading = MutableLiveData(false)
@@ -75,6 +76,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    @VisibleForTesting
     private suspend fun getLocation() {
         _location.value = getLocationUseCase.invoke()
     }
