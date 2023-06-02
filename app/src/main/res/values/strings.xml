@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="humidity">Humidity</string>
+    <string name="defis">—</string>
+    <string name="min_temperature">Min Temperature</string>
+    <string name="max_temperature">Max Temperature</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="error">Ошибка! Город не найден!</string>
+    <string name="metric">°C</string>
+    <string name="am"> AM</string>
+    <string name="pm"> PM</string>
+    <string name="perm_error">Ошибка! Геолокацию определить не удалось!</string>
 </resources>
